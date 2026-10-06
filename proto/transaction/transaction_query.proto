@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package pb;
+
+import "transaction/transaction_common.proto";
+
+option go_package = "github.com/MamangRust/microservice-point-of-sale-pb/transaction;transaction";
+
+message FindAllTransactionRequest {
+    int32 page = 1;
+    int32 page_size = 2;
+    string search = 3;
+}
+
+message FindAllTransactionMerchantRequest {
+    int32 merchant_id = 1;
+    int32 page = 2;
+    int32 page_size = 3;
+    string search = 4;
+}
+
+service TransactionQueryService {
+    rpc FindAll(FindAllTransactionRequest) returns (ApiResponsePaginationTransaction);
+    rpc FindByMerchant(FindAllTransactionMerchantRequest) returns (ApiResponsePaginationTransaction);
+    rpc FindById(FindByIdTransactionRequest) returns (ApiResponseTransaction);
+
+    rpc FindMonthStatusSuccess(FindMonthlyTransactionStatus) returns(ApiResponseTransactionMonthAmountSuccess);
+    rpc FindYearStatusSuccess(FindYearlyTransactionStatus) returns(ApiResponseTransactionYearAmountSuccess);
+
+    rpc FindMonthStatusFailed(FindMonthlyTransactionStatus) returns(ApiResponseTransactionMonthAmountFailed);
+    rpc FindYearStatusFailed(FindYearlyTransactionStatus) returns(ApiResponseTransactionYearAmountFailed);
+
+    rpc FindMonthStatusSuccessByMerchant(FindMonthlyTransactionStatusByMerchant) returns(ApiResponseTransactionMonthAmountSuccess);
+    rpc FindYearStatusSuccessByMerchant(FindYearlyTransactionStatusByMerchant) returns(ApiResponseTransactionYearAmountSuccess);
+
+    rpc FindMonthStatusFailedByMerchant(FindMonthlyTransactionStatusByMerchant) returns(ApiResponseTransactionMonthAmountFailed);
+    rpc FindYearStatusFailedByMerchant(FindYearlyTransactionStatusByMerchant) returns(ApiResponseTransactionYearAmountFailed);
+
+    rpc FindMonthMethodSuccess(MonthTransactionMethod) returns(ApiResponseTransactionMonthPaymentMethod);
+    rpc FindYearMethodSuccess(YearTransactionMethod) returns(ApiResponseTransactionYearPaymentmethod);
+
+    rpc FindMonthMethodByMerchantSuccess(MonthTransactionMethodByMerchant) returns(ApiResponseTransactionMonthPaymentMethod);
+    rpc FindYearMethodByMerchantSuccess(YearTransactionMethodByMerchant) returns(ApiResponseTransactionYearPaymentmethod);
+
+    rpc FindMonthMethodFailed(MonthTransactionMethod) returns(ApiResponseTransactionMonthPaymentMethod);
+    rpc FindYearMethodFailed(YearTransactionMethod) returns(ApiResponseTransactionYearPaymentmethod);
+
+    rpc FindMonthMethodByMerchantFailed(MonthTransactionMethodByMerchant) returns(ApiResponseTransactionMonthPaymentMethod);
+    rpc FindYearMethodByMerchantFailed(YearTransactionMethodByMerchant) returns(ApiResponseTransactionYearPaymentmethod);
+
+    rpc FindByActive(FindAllTransactionRequest) returns (ApiResponsePaginationTransactionDeleteAt) {}
+    rpc FindByTrashed(FindAllTransactionRequest) returns (ApiResponsePaginationTransactionDeleteAt) {}
+}

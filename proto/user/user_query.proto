@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package pb;
+
+import "user/user_common.proto";
+
+option go_package = "github.com/MamangRust/microservice-point-of-sale-pb/user;user";
+
+message FindAllUserRequest {
+    int32 page = 1;
+    int32 page_size = 2;
+    string search = 3;
+}
+
+message FindByEmailUserRequest {
+    string email = 1;
+}
+
+message FindByVerificationCodeUserRequest {
+    string verification_code = 1;
+}
+
+service UserQueryService {
+    rpc FindAll(FindAllUserRequest) returns (ApiResponsePaginationUser);
+    rpc FindById(FindByIdUserRequest) returns (ApiResponseUser);
+    rpc FindByEmail(FindByEmailUserRequest) returns (ApiResponseUserWithPassword);
+    rpc FindByEmailAndVerify(FindByEmailUserRequest) returns (ApiResponseUserWithPassword);
+    rpc FindByVerificationCode(FindByVerificationCodeUserRequest) returns (ApiResponseUser);
+
+    rpc FindByActive(FindAllUserRequest) returns (ApiResponsePaginationUserDeleteAt) {}
+    rpc FindByTrashed(FindAllUserRequest) returns (ApiResponsePaginationUserDeleteAt) {}
+}

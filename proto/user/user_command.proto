@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/protobuf/empty.proto";
+import "user/user_common.proto";
+
+option go_package = "github.com/MamangRust/microservice-point-of-sale-pb/user;user";
+
+message CreateUserRequest {
+    string firstname = 1;
+    string lastname = 2;
+    string email = 3;
+    string password = 4;
+    string confirm_password = 5;
+}
+
+message UpdateUserRequest {
+    int32 id = 1;
+    string firstname = 2;
+    string lastname = 3;
+    string email = 4;
+    string password = 5;
+    string confirm_password = 6;
+}
+
+// CreateUserRecordRequest registers a user with auth-managed fields (password
+// hash, verification code, verification flag). Suffix "Record" is required
+// because CreateUserRequest already exists in this proto package.
+message CreateUserRecordRequest {
+    string firstname = 1;
+    string lastname = 2;
+    string email = 3;
+    string password = 4;
+    string verification_code = 5;
+    bool is_verified = 6;
+}
+
+message UpdateUserIsVerifiedUserRequest {
+    int32 id = 1;
+    bool is_verified = 2;
+}
+
+message UpdateUserPasswordUserRequest {
+    int32 id = 1;
+    string password = 2;
+}
+
+service UserCommandService {
+    rpc Create(CreateUserRequest) returns (ApiResponseUser);
+    rpc CreateUserRecord(CreateUserRecordRequest) returns (ApiResponseUser);
+    rpc Update(UpdateUserRequest) returns (ApiResponseUser);
+    rpc UpdateUserIsVerified(UpdateUserIsVerifiedUserRequest) returns (ApiResponseUser);
+    rpc UpdateUserPassword(UpdateUserPasswordUserRequest) returns (ApiResponseUser);
+    rpc TrashedUser(FindByIdUserRequest) returns (ApiResponseUserDeleteAt);
+    rpc RestoreUser(FindByIdUserRequest) returns (ApiResponseUserDeleteAt);
+    rpc DeleteUserPermanent(FindByIdUserRequest) returns (ApiResponseUserDelete);
+
+    rpc RestoreAllUser(google.protobuf.Empty) returns (ApiResponseUserAll){}
+    rpc DeleteAllUserPermanent(google.protobuf.Empty) returns (ApiResponseUserAll){}
+}

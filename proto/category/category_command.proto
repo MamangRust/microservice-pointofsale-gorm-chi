@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/protobuf/empty.proto";
+import "category/category_common.proto";
+
+option go_package = "github.com/MamangRust/microservice-point-of-sale-pb/category;category";
+
+message CreateCategoryRequest {
+    string name = 1;
+    string description = 2;
+}
+
+message UpdateCategoryRequest {
+    int32 category_id = 1;
+    string name = 2;
+    string description = 3;
+}
+
+service CategoryCommandService {
+    rpc Create(CreateCategoryRequest) returns (ApiResponseCategory);
+    rpc Update(UpdateCategoryRequest) returns (ApiResponseCategory);
+    rpc TrashedCategory(FindByIdCategoryRequest) returns (ApiResponseCategoryDeleteAt);
+    rpc RestoreCategory(FindByIdCategoryRequest) returns (ApiResponseCategoryDeleteAt);
+    rpc DeleteCategoryPermanent(FindByIdCategoryRequest) returns (ApiResponseCategoryDelete);
+
+    rpc RestoreAllCategory(google.protobuf.Empty) returns (ApiResponseCategoryAll){}
+    rpc DeleteAllCategoryPermanent(google.protobuf.Empty) returns (ApiResponseCategoryAll){}
+}

@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package pb;
+
+import "cashier/cashier_common.proto";
+
+option go_package = "github.com/MamangRust/microservice-point-of-sale-pb/cashier;cashier";
+
+message FindAllCashierRequest {
+    int32 page = 1;
+    int32 page_size = 2;
+    string search = 3;
+}
+
+message FindByMerchantCashierRequest {
+    int32 merchant_id = 1;
+    int32 page = 2;
+    int32 page_size = 3;
+    string search = 4;
+}
+
+service CashierQueryService{
+    rpc FindMonthlyTotalSales(FindYearMonthTotalSales) returns (ApiResponseCashierMonthlyTotalSales){}
+    rpc FindYearlyTotalSales(FindYearTotalSales) returns (ApiResponseCashierYearlyTotalSales){}
+
+    rpc FindMonthlyTotalSalesById(FindYearMonthTotalSalesById) returns (ApiResponseCashierMonthlyTotalSales){}
+    rpc FindYearlyTotalSalesById(FindYearTotalSalesById) returns (ApiResponseCashierYearlyTotalSales){}
+
+    rpc FindMonthlyTotalSalesByMerchant(FindYearMonthTotalSalesByMerchant) returns (ApiResponseCashierMonthlyTotalSales){}
+    rpc FindYearlyTotalSalesByMerchant(FindYearTotalSalesByMerchant) returns (ApiResponseCashierYearlyTotalSales){}
+
+    rpc FindAll(FindAllCashierRequest) returns (ApiResponsePaginationCashier){}
+    rpc FindById(FindByIdCashierRequest) returns (ApiResponseCashier){}
+
+    rpc FindMonthSales(FindYearCashier) returns(ApiResponseCashierMonthSales){}
+    rpc FindYearSales(FindYearCashier) returns(ApiResponseCashierYearSales){}
+    rpc FindMonthSalesByMerchant(FindYearCashierByMerchant) returns(ApiResponseCashierMonthSales){}
+    rpc FindYearSalesByMerchant(FindYearCashierByMerchant) returns(ApiResponseCashierYearSales){}
+
+    rpc FindMonthSalesById(FindYearCashierById) returns(ApiResponseCashierMonthSales){}
+    rpc FindYearSalesById(FindYearCashierById) returns(ApiResponseCashierYearSales){}
+
+    rpc FindByActive(FindAllCashierRequest) returns (ApiResponsePaginationCashierDeleteAt) {}
+    rpc FindByTrashed(FindAllCashierRequest) returns (ApiResponsePaginationCashierDeleteAt) {}
+
+    rpc FindByMerchant(FindByMerchantCashierRequest) returns (ApiResponsePaginationCashier){}
+}

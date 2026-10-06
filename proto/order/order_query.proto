@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package pb;
+
+import "order/order_common.proto";
+
+option go_package = "github.com/MamangRust/microservice-point-of-sale-pb/order;order";
+
+message FindAllOrderRequest {
+    int32 page = 1;
+    int32 page_size = 2;
+    string search = 3;
+}
+
+message FindAllOrderMerchantRequest {
+    int32 page = 1;
+    int32 page_size = 2;
+    string search = 3;
+    int32 merchant_id = 4;
+}
+
+service OrderQueryService{
+    rpc FindMonthlyTotalRevenue(FindYearMonthTotalRevenue) returns (ApiResponseOrderMonthlyTotalRevenue){}
+    rpc FindYearlyTotalRevenue(FindYearTotalRevenue) returns (ApiResponseOrderYearlyTotalRevenue){}
+
+    rpc FindMonthlyTotalRevenueById(FindYearMonthTotalRevenueById) returns (ApiResponseOrderMonthlyTotalRevenue){}
+    rpc FindYearlyTotalRevenueById(FindYearTotalRevenueById) returns (ApiResponseOrderYearlyTotalRevenue){}
+
+    rpc FindMonthlyTotalRevenueByMerchant(FindYearMonthTotalRevenueByMerchant) returns (ApiResponseOrderMonthlyTotalRevenue){}
+    rpc FindYearlyTotalRevenueByMerchant(FindYearTotalRevenueByMerchant) returns (ApiResponseOrderYearlyTotalRevenue){}
+
+    rpc FindAll(FindAllOrderRequest) returns(ApiResponsePaginationOrder);
+    rpc FindByMerchant(FindAllOrderMerchantRequest) returns(ApiResponsePaginationOrder);
+
+    rpc FindById(FindByIdOrderRequest) returns(ApiResponseOrder);
+
+    rpc FindMonthlyRevenue(FindYearOrder) returns(ApiResponseOrderMonthly);
+    rpc FindYearlyRevenue(FindYearOrder) returns(ApiResponseOrderYearly);
+
+    rpc FindMonthlyRevenueByMerchant(FindYearOrderByMerchant) returns(ApiResponseOrderMonthly);
+    rpc FindYearlyRevenueByMerchant(FindYearOrderByMerchant) returns(ApiResponseOrderYearly);
+
+    rpc FindByActive(FindAllOrderRequest) returns (ApiResponsePaginationOrderDeleteAt) {}
+    rpc FindByTrashed(FindAllOrderRequest) returns (ApiResponsePaginationOrderDeleteAt) {}
+}

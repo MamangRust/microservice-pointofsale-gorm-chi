@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/protobuf/empty.proto";
+import "cashier/cashier_common.proto";
+
+option go_package = "github.com/MamangRust/microservice-point-of-sale-pb/cashier;cashier";
+
+message CreateCashierRequest {
+    int32 merchant_id = 1;
+    int32 user_id = 2;
+    string name = 3;
+}
+
+message UpdateCashierRequest {
+    int32 cashier_id = 1;
+    string name = 2;
+}
+
+service CashierCommandService{
+    rpc CreateCashier(CreateCashierRequest) returns(ApiResponseCashier){}
+    rpc UpdateCashier(UpdateCashierRequest) returns(ApiResponseCashier){}
+    rpc TrashedCashier(FindByIdCashierRequest) returns(ApiResponseCashierDeleteAt){}
+    rpc RestoreCashier(FindByIdCashierRequest) returns(ApiResponseCashierDeleteAt){}
+
+    rpc DeleteCashierPermanent(FindByIdCashierRequest) returns (ApiResponseCashierDelete);
+
+    rpc RestoreAllCashier(google.protobuf.Empty) returns (ApiResponseCashierAll){}
+    rpc DeleteAllCashierPermanent(google.protobuf.Empty) returns (ApiResponseCashierAll){}
+}
